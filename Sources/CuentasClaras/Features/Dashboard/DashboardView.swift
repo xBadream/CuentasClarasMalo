@@ -6,21 +6,21 @@ public struct DashboardView: View {
     public var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 18) {
                     Text("Dashboard")
-                        .font(.largeTitle.weight(.bold))
+                        .font(.largeTitle.bold())
 
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 180))], spacing: 12) {
-                        StatCard(title: "Saldo disponible", value: "$ 1.250.000")
-                        StatCard(title: "Saldo contable", value: "$ 1.285.000")
-                        StatCard(title: "Total cargos", value: "$ 120.000")
-                        StatCard(title: "Total abonos", value: "$ 155.000")
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 180), spacing: 12)], spacing: 12) {
+                        SummaryCard(title: "Saldo disponible", value: "$ 1.250.000")
+                        SummaryCard(title: "Saldo contable", value: "$ 1.285.000")
+                        SummaryCard(title: "Total cargos", value: "$ 120.000")
+                        SummaryCard(title: "Total abonos", value: "$ 155.000")
                     }
 
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 12) {
                         Text("Líneas de crédito")
                             .font(.headline)
-                        CreditLineCard(approved: 600000, used: 170000, available: 430000)
+                        CreditLineCard(approved: 600_000, used: 170_000, available: 430_000)
                     }
 
                     NavigationLink(destination: StatementsView()) {
@@ -39,7 +39,7 @@ public struct DashboardView: View {
     }
 }
 
-private struct StatCard: View {
+private struct SummaryCard: View {
     let title: String
     let value: String
 
@@ -49,7 +49,7 @@ private struct StatCard: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Text(value)
-                .font(.title3.weight(.semibold))
+                .font(.title3.bold())
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
@@ -64,13 +64,13 @@ private struct CreditLineCard: View {
     let available: Decimal
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("Crédito total")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Text(approved.formatted(.currency(code: "CLP")))
-                .font(.title3.weight(.semibold))
-            ProgressView(value: Decimal(used) / Decimal(approved), total: 1)
+                .font(.title3.bold())
+            ProgressView(value: used / approved, total: 1)
                 .tint(.orange)
             HStack {
                 Text("Usado: \(used.formatted(.currency(code: "CLP")))")

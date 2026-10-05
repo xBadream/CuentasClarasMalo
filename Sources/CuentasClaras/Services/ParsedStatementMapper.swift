@@ -18,6 +18,10 @@ public final class ParsedStatementMapper {
             warnings: parsed.warnings
         )
 
+        if let account {
+            statement.account = account
+        }
+
         let summary = AccountSummary(
             openingBalance: parsed.openingBalance,
             totalDebits: parsed.totalDebits,
@@ -28,17 +32,13 @@ public final class ParsedStatementMapper {
         )
         statement.summary = summary
 
-        let creditLine = CreditLine(
+        let line = CreditLine(
             approvedAmount: parsed.availableBalance,
             usedAmount: parsed.totalDebits,
-            availableAmount: max(parsed.availableBalance - parsed.totalDebits, 0),
+            availableAmount: max(parsed.availableBalance - parsed.totalDebits, .zero),
             isActive: true
         )
-        statement.creditLine = creditLine
-
-        if let account {
-            statement.account = account
-        }
+        statement.creditLine = line
 
         statement.transactions = parsed.transactions.map { parsedTransaction in
             let transaction = Transaction(

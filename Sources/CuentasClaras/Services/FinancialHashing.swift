@@ -8,13 +8,13 @@ public enum FinancialHashing {
         return digest.map { String(format: "%02x", $0) }.joined()
     }
 
-    public static func forBankStatement(fileName: String, issueDate: Date, statementNumber: String) -> String {
-        let payload = "\(fileName)|\(issueDate.timeIntervalSince1970)|\(statementNumber)"
+    public static func statementFingerprint(fileName: String, issueDate: Date, statementNumber: String) -> String {
+        let payload = [fileName, statementNumber, String(issueDate.timeIntervalSince1970)].joined(separator: "|")
         return sha256(payload)
     }
 
-    public static func forTransaction(documentNumber: String, amount: Decimal, date: Date, description: String) -> String {
-        let normalized = "\(documentNumber)|\(NSDecimalNumber(decimal: amount).stringValue)|\(date.timeIntervalSince1970)|\(description)"
-        return sha256(normalized)
+    public static func transactionFingerprint(documentNumber: String, date: Date, description: String, amount: Decimal) -> String {
+        let payload = [documentNumber, description, String(date.timeIntervalSince1970), NSDecimalNumber(decimal: amount).stringValue].joined(separator: "|")
+        return sha256(payload)
     }
 }

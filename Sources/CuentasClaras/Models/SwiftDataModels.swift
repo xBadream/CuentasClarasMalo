@@ -26,42 +26,6 @@ public final class BankAccount {
 }
 
 @Model
-public final class BankStatement {
-    @Attribute(.unique) public var importFingerprint: String
-    public var statementNumber: String
-    public var periodStart: Date
-    public var periodEnd: Date
-    public var issueDate: Date
-    public var sourceFileName: String
-    public var importedAt: Date
-    public var warnings: [String] = []
-    public var account: BankAccount?
-    public var summary: AccountSummary?
-    public var creditLine: CreditLine?
-    @Relationship(deleteRule: .cascade, inverse: \Transaction.statement) public var transactions: [Transaction] = []
-
-    public init(
-        importFingerprint: String,
-        statementNumber: String,
-        periodStart: Date,
-        periodEnd: Date,
-        issueDate: Date,
-        sourceFileName: String,
-        importedAt: Date = Date(),
-        warnings: [String] = []
-    ) {
-        self.importFingerprint = importFingerprint
-        self.statementNumber = statementNumber
-        self.periodStart = periodStart
-        self.periodEnd = periodEnd
-        self.issueDate = issueDate
-        self.sourceFileName = sourceFileName
-        self.importedAt = importedAt
-        self.warnings = warnings
-    }
-}
-
-@Model
 public final class AccountSummary {
     public var openingBalance: Decimal
     public var totalDebits: Decimal
@@ -106,6 +70,42 @@ public final class CreditLine {
         self.usedAmount = usedAmount
         self.availableAmount = availableAmount
         self.isActive = isActive
+    }
+}
+
+@Model
+public final class BankStatement {
+    @Attribute(.unique) public var importFingerprint: String
+    public var statementNumber: String
+    public var periodStart: Date
+    public var periodEnd: Date
+    public var issueDate: Date
+    public var sourceFileName: String
+    public var importedAt: Date
+    public var warnings: [String] = []
+    public var account: BankAccount?
+    public var summary: AccountSummary?
+    public var creditLine: CreditLine?
+    @Relationship(deleteRule: .cascade, inverse: \Transaction.statement) public var transactions: [Transaction] = []
+
+    public init(
+        importFingerprint: String,
+        statementNumber: String,
+        periodStart: Date,
+        periodEnd: Date,
+        issueDate: Date,
+        sourceFileName: String,
+        importedAt: Date = Date(),
+        warnings: [String] = []
+    ) {
+        self.importFingerprint = importFingerprint
+        self.statementNumber = statementNumber
+        self.periodStart = periodStart
+        self.periodEnd = periodEnd
+        self.issueDate = issueDate
+        self.sourceFileName = sourceFileName
+        self.importedAt = importedAt
+        self.warnings = warnings
     }
 }
 

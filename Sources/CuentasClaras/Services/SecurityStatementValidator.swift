@@ -34,6 +34,10 @@ public final class SecurityStatementValidator {
             }
         }
 
+        if statement.transactions.contains(where: { $0.requiresReview }) {
+            issues.append(.init(message: "Existen movimientos pendientes de revisión manual.", isBlocking: false))
+        }
+
         return issues
     }
 

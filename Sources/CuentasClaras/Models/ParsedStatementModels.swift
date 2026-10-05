@@ -1,15 +1,16 @@
 import Foundation
 
-public enum TransactionDirection {
-    case debit
-    case credit
+public struct SecurityStatementBalance {
+    public let previousBalance: Decimal
+    public let currentBalance: Decimal
+    public let delta: Decimal
 }
 
-public enum StatementImportStatus {
-    case pending
-    case imported
-    case duplicate
-    case invalid
+public enum StatementImportError: Error {
+    case invalidStatement
+    case duplicatedStatement
+    case invalidPDF
+    case missingAccount
 }
 
 public struct ParsedTransaction: Equatable {
@@ -22,13 +23,9 @@ public struct ParsedTransaction: Equatable {
     public let parserConfidence: Double
     public let sourcePage: Int
     public let sourceRawText: String
-    public let requiresReview: Bool
     public let categoryName: String?
+    public let requiresReview: Bool
     public let importFingerprint: String
-
-    public static func == (lhs: ParsedTransaction, rhs: ParsedTransaction) -> Bool {
-        lhs.importFingerprint == rhs.importFingerprint
-    }
 }
 
 public struct ParsedStatement: Equatable {

@@ -5,29 +5,23 @@ public struct StatementDetailView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 18) {
                 Text("Resumen financiero")
-                    .font(.title2.weight(.semibold))
-                Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 12) {
-                    GridRow {
-                        Text("Saldo inicial")
-                        Text("$ 1.000.000")
-                    }
-                    GridRow {
-                        Text("Abonos")
-                        Text("$ 315.000")
-                    }
-                    GridRow {
-                        Text("Cargos")
-                        Text("$ 130.000")
-                    }
-                    GridRow {
-                        Text("Saldo final")
-                        Text("$ 1.185.000")
-                    }
-                }
+                    .font(.title2.bold())
 
-                CreditLineCard(approved: 600000, used: 170000, available: 430000)
+                VStack(alignment: .leading, spacing: 10) {
+                    LabeledContent("Saldo inicial", value: "$ 1.000.000")
+                    LabeledContent("Abonos", value: "$ 315.000")
+                    LabeledContent("Cargos", value: "$ 130.000")
+                    LabeledContent("Saldo final", value: "$ 1.185.000")
+                }
+                .padding()
+                .background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+
+                Text("Línea de crédito")
+                    .font(.headline)
+                CreditLineCard(approved: 600_000, used: 170_000, available: 430_000)
 
                 Text("Advertencias")
                     .font(.headline)
@@ -36,6 +30,7 @@ public struct StatementDetailView: View {
 
                 NavigationLink(destination: TransactionDetailView()) {
                     Label("Ver detalle de transacciones", systemImage: "list.bullet")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .padding()

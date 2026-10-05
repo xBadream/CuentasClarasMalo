@@ -5,8 +5,8 @@ public struct StatementsView: View {
 
     public var body: some View {
         List {
-            StatementRow(name: "Cartola Banco Security", period: "01/09 - 30/09", amount: "$ 1.285.000")
-            StatementRow(name: "Cartola Banco Security", period: "01/08 - 31/08", amount: "$ 1.240.000")
+            StatementRow(title: "Cartola Banco Security", range: "01/09 - 30/09", total: "$ 1.285.000")
+            StatementRow(title: "Cartola Banco Security", range: "01/08 - 31/08", total: "$ 1.240.000")
         }
         .navigationTitle("Cartolas")
         .toolbar {
@@ -20,20 +20,20 @@ public struct StatementsView: View {
 }
 
 private struct StatementRow: View {
-    let name: String
-    let period: String
-    let amount: String
+    let title: String
+    let range: String
+    let total: String
 
     var body: some View {
         NavigationLink(destination: StatementDetailView()) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(name)
+                Text(title)
                     .font(.headline)
-                Text(period)
+                Text(range)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Text(amount)
-                    .font(.subheadline.weight(.semibold))
+                Text(total)
+                    .font(.subheadline.bold())
                     .foregroundStyle(.green)
             }
             .padding(.vertical, 4)

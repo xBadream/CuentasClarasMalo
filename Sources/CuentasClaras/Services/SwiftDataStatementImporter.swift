@@ -11,18 +11,12 @@ public final class SwiftDataStatementImporter {
     }
 
     public func importStatement(_ statement: BankStatement) throws {
-        let descriptor = FetchDescriptor<BankStatement>(predicate: #Predicate { $0.importFingerprint == statement.importFingerprint })
+        let predicate = #Predicate<BankStatement> { $0.importFingerprint == statement.importFingerprint }
+        let descriptor = FetchDescriptor(predicate: predicate)
         let existing = try modelContext.fetch(descriptor)
-        guard existing.isEmpty else {
-            throw ImportError.duplicateStatement
-        }
+        guard existing.isEmpty else { throw StatementImportError.duplicatedStatement }
 
         modelContext.insert(statement)
         try modelContext.save()
-    }
-
-    public enum ImportError: Error {
-        case duplicateStatement
-        case invalidContext
     }
 }
